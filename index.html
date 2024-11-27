@@ -3,266 +3,639 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de Contact Moderne</title>
-    <script type="module" src="contact.js"></script>
-
+    <title>Armel Dev - E-commerce</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #2c3e50;
+            --background: #f8f9fa;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --text-color: #2c3e50;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --hover-color: rgba(74, 144, 226, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #3498db;
+            --secondary-color: #ecf0f1;
+            --background: #1a1a1a;
+            --card-bg: rgba(28, 28, 28, 0.7);
+            --text-color: #ecf0f1;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --hover-color: rgba(52, 152, 219, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
         }
 
         body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
-            padding: 20px;
+            background: var(--background);
+            color: var(--text-color);
+            overflow-x: hidden;
         }
 
-        .contact-container {
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 500px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.1);
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeIn 0.6s ease forwards;
+            z-index: 1000;
+            padding: 1rem 5%;
+            box-shadow: 0 2px 20px var(--shadow-color);
         }
 
-        @keyframes fadeIn {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        h2 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-            font-weight: 600;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
             position: relative;
         }
 
-        h2::after {
+        .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(90deg, #00f7ff, #00ff95);
-            border-radius: 10px;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
         }
 
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .form-group label {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.7);
-            pointer-events: none;
-            transition: 0.3s ease;
-        }
-
-        .form-group.message label {
-            top: 20px;
-        }
-
-        .form-group input,
-        .form-group textarea {
+        .nav-links a:hover::after {
             width: 100%;
-            padding: 15px;
-            border: none;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s ease;
         }
 
-        .form-group textarea {
-            height: 150px;
-            resize: none;
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 247, 255, 0.1);
-        }
-
-        .form-group input:focus + label,
-        .form-group textarea:focus + label,
-        .form-group input:valid + label,
-        .form-group textarea:valid + label {
-            top: -25px;
-            left: 5px;
-            font-size: 14px;
-            color: #00f7ff;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(90deg, #00f7ff, #00ff95);
-            color: #fff;
-            font-size: 16px;
-            font-weight: 600;
+        .nav-icons i {
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+
+        .cart-count {
             position: relative;
+        }
+
+        .count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .hero {
+            margin-top: 80px;
+            padding: 2rem 5%;
+            position: relative;
+            height: 80vh;
+            display: flex;
+            align-items: center;
             overflow: hidden;
         }
 
-        button::before {
-            content: '';
+        .hero-content {
+            width: 50%;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s ease;
+            background: url('https://picsum.photos/1200/800?random=1') center/cover;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
         }
 
-        button:hover::before {
-            left: 100%;
+        .categories {
+            padding: 4rem 5%;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
-        }
-
-        .success-message,
-        .error-message {
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 15px;
+        .section-title {
             text-align: center;
-            display: none;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-color);
         }
 
-        .success-message {
-            background: rgba(0, 255, 0, 0.1);
-            color: #00ff95;
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
 
-        .error-message {
-            background: rgba(255, 0, 0, 0.1);
-            color: #ff4444;
+        .category-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 
+                8px 8px 15px var(--shadow-color),
+                -8px -8px 15px rgba(255, 255, 255, 0.1);
         }
 
-        @media (max-width: 480px) {
-            .contact-container {
-                padding: 20px;
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .category-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .featured-products {
+            padding: 4rem 5%;
+            background: var(--background);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 
+                8px 8px 15px var(--shadow-color),
+                -8px -8px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .product-info p {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .add-to-cart {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: var(--secondary-color);
+        }
+
+        footer {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section p, .footer-section a {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--shadow-color);
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
             }
 
-            h2 {
-                font-size: 1.5em;
+            .hero-content {
+                width: 100%;
+                text-align: center;
             }
 
-            .form-group input,
-            .form-group textarea {
-                font-size: 14px;
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-image {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="contact-container">
-        <h2>Contactez-nous</h2>
-        <form id="contactForm">
-            <div class="form-group">
-                <input type="text" id="name" required>
-                <label for="name">Nom</label>
+    <div class="background-animation" id="particles-js"></div>
+    
+    <header>
+        <nav>
+            <div class="logo">Armel Dev</div>
+            <div class="nav-links">
+                <a href="#home">Accueil</a>
+                <a href="contact.html">Contact</a>
+                <a href="#shop">Boutique</a>
+                <a href="#categories">Catégories</a>
+                <a href="#about">À propos</a>
+                <a href="#contact">Contact</a>
             </div>
-            <div class="form-group">
-                <input type="email" id="email" required>
-                <label for="email">Email</label>
+            <div class="nav-icons">
+                <i class="fas fa-search"></i>
+                <div class="cart-count">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="count">0</span>
+                </div>
+                <button class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
-            <div class="form-group message">
-                <textarea id="message" required></textarea>
-                <label for="message">Message</label>
-            </div>
-            <button type="submit">Envoyer</button>
-        </form>
-        <div class="success-message">Message envoyé avec succès!</div>
-        <div class="error-message">Une erreur s'est produite. Veuillez réessayer.</div>
-    </div>
+        </nav>
+    </header>
 
+    <section class="hero" id="home">
+        <div class="hero-content" data-aos="fade-right">
+            <h1>Découvrez notre collection exclusive</h1>
+            <p>Les meilleures offres pour des produits de qualité supérieure</p>
+            <button class="cta-button">Acheter maintenant</button>
+        </div>
+        <div class="hero-image" data-aos="fade-left"></div>
+    </section>
+
+    <section class="categories" id="categories">
+        <h2 class="section-title" data-aos="fade-up">Nos Catégories</h2>
+        <div class="category-grid">
+            <div class="category-card" data-aos="fade-up">
+                <i class="fas fa-laptop"></i>
+                <h3>Électronique</h3>
+                <p>Découvrez nos gadgets</p>
+            </div>
+            <div class="category-card" data-aos="fade-up" data-aos-delay="100">
+                <i class="fas fa-tshirt"></i>
+                <h3>Mode</h3>
+                <p>Tendances actuelles</p>
+            </div>
+            <div class="category-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="fas fa-home"></i>
+                <h3>Maison</h3>
+                <p>Déco et accessoires</p>
+            </div>
+            <div class="category-card" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Sport</h3>
+                <p>Équipement sportif</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-products" id="shop">
+        <h2 class="section-title" data-aos="fade-up">Produits en vedette</h2>
+        <div class="product-grid">
+            <div class="product-card" data-aos="fade-up">
+                <img src="https://picsum.photos/400/300?random=2" alt="Product" class="product-image">
+                <div class="product-info">
+                    <h3>Produit Premium</h3>
+                    <p>Description du produit premium avec ses caractéristiques uniques.</p>
+                    <span class="price">99.99 €</span>
+                    <button class="add-to-cart">Ajouter au panier</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://picsum.photos/400/300?random=3" alt="Product" class="product-image">
+                <div class="product-info">
+                    <h3>Produit Exclusif</h3>
+                    <p>Description du produit exclusif avec ses caractéristiques uniques.</p>
+                    <span class="price">149.99 €</span>
+                    <button class="add-to-cart">Ajouter au panier</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://picsum.photos/400/300?random=4" alt="Product" class="product-image">
+                <div class="product-info">
+                    <h3>Produit Spécial</h3>
+                    <p>Description du produit spécial avec ses caractéristiques uniques.</p>
+                    <span class="price">199.99 €</span>
+                    <button class="add-to-cart">Ajouter au panier</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Armel Dev</h4>
+                <p>Votre destination shopping préférée pour des produits de qualité.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://wa.me/25765805506"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <a href="#">À propos de nous</a>
+                <a href="#">Politique de confidentialité</a>
+                <a href="#">Conditions d'utilisation</a>
+                <a href="#">FAQ</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: contact@armeldev.com</p>
+                <p>Téléphone: +33 1 23 45 67 89</p>
+                <p>Adresse: 123 Rue du Commerce, Paris</p>
+            </div>
+            <div class="footer-section">
+                <h4>Newsletter</h4>
+                <p>Abonnez-vous pour recevoir nos dernières offres</p>
+                <form>
+                    <input type="email" placeholder="Votre email" style="padding: 0.5rem; width: 100%; margin-bottom: 1rem; border-radius: 5px; border: 1px solid var(--shadow-color); background: var(--background);">
+                    <button class="cta-button" style="width: 100%;">S'abonner</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Armel Dev. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Configuration Firebase (à remplacer par vos propres informations)
-        const firebaseConfig = {
-            apiKey: "VOTRE_API_KEY",
-            authDomain: "VOTRE_AUTH_DOMAIN",
-            projectId: "VOTRE_PROJECT_ID",
-            storageBucket: "VOTRE_STORAGE_BUCKET",
-            messagingSenderId: "VOTRE_MESSAGING_SENDER_ID",
-            appId: "VOTRE_APP_ID"
-        };
+        // Initialisation AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
 
-        // Initialisation Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        // Toggle theme
+        const themeToggle = document.querySelector('.theme-toggle');
+        const body = document.body;
 
-        // Gestion du formulaire
-        document.getElementById('contactForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        themeToggle.addEventListener('click', () => {
+            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+            themeToggle.querySelector('i').classList.toggle('fa-moon');
+            themeToggle.querySelector('i').classList.toggle('fa-sun');
+        });
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+        // Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#4a90e2"
+                },
+                shape: {
+                    type: "circle"
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false
+                },
+                size: {
+                    value: 3,
+                    random: true
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a90e2",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
 
-            try {
-                await db.collection('contacts').add({
-                    name: name,
-                    email: email,
-                    message: message,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
+        // Cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.count');
+        let count = 0;
 
-                // Afficher le message de succès
-                document.querySelector('.success-message').style.display = 'block';
-                document.querySelector('.error-message').style.display = 'none';
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                count++;
+                cartCount.textContent = count;
                 
-                // Réinitialiser le formulaire
-                document.getElementById('contactForm').reset();
-
-                // Cacher le message de succès après 3 secondes
+                // Animation for button
+                button.style.transform = 'scale(0.95)';
                 setTimeout(() => {
-                    document.querySelector('.success-message').style.display = 'none';
-                }, 3000);
+                    button.style.transform = 'scale(1)';
+                }, 100);
 
-            } catch (error) {
-                console.error("Erreur:", error);
-                document.querySelector('.error-message').style.display = 'block';
-                document.querySelector('.success-message').style.display = 'none';
-
-                // Cacher le message d'erreur après 3 secondes
+                // Notification
+                const notification = document.createElement('div');
+                notification.style.position = 'fixed';
+                notification.style.bottom = '20px';
+                notification.style.right = '20px';
+                notification.style.background = 'var(--primary-color)';
+                notification.style.color = 'white';
+                notification.style.padding = '1rem';
+                notification.style.borderRadius = '5px';
+                notification.style.zIndex = '1000';
+                notification.textContent = 'Produit ajouté au panier!';
+                
+                document.body.appendChild(notification);
+                
                 setTimeout(() => {
-                    document.querySelector('.error-message').style.display = 'none';
+                    notification.remove();
                 }, 3000);
-            }
+            });
         });
     </script>
 </body>
