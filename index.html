@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Armel Dev - E-commerce</title>
+    <script src="https://js.stripe.com/v3/"></script> <!-- Load Stripe.js -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
@@ -387,6 +388,121 @@
                 display: none;
             }
         }
+
+        .weather-widget-container {
+    position: fixed;
+    top: 80px; /* Adjust this value based on your header height */
+    right: 20px;
+    z-index: 1000;
+}
+
+.weather-widget {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: 250px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.weather-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.weather-info {
+    flex-grow: 1;
+}
+
+.weather-location {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.weather-temp {
+    font-size: 1.2em;
+    color: #3498db;
+    margin-bottom: 3px;
+}
+
+.weather-description {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    text-transform: capitalize;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    .weather-widget {
+        background: rgba(30, 30, 30, 0.95);
+    }
+    
+    .weather-location {
+        color: #ecf0f1;
+    }
+    
+    .weather-temp {
+        color: #3498db;
+    }
+    
+    .weather-description {
+        color: #bdc3c7;
+    }
+
+    .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: var(--primary-light);
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .form-input {
+            background: var(--primary-dark);
+            color: var(--text-dark);
+            border-color: #444;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+}
+
+#response{
+    color:green;
+}
+
+.hidden {
+    display: none;
+}
     </style>
 </head>
 <body>
@@ -397,11 +513,11 @@
             <div class="logo">Armel Dev</div>
             <div class="nav-links">
                 <a href="#home">Accueil</a>
-                <a href="contact.html">Contact</a>
+            
                 <a href="#shop">Boutique</a>
                 <a href="#categories">Catégories</a>
                 <a href="#about">À propos</a>
-                <a href="#contact">Contact</a>
+                <a href="contact.html">Contact</a>
             </div>
             <div class="nav-icons">
                 <i class="fas fa-search"></i>
@@ -414,13 +530,41 @@
                 </button>
             </div>
         </nav>
+
+       <!-- Pour une meteo-->
+
+        <div class="weather-widget-container">
+            <div class="weather-widget">
+                <div class="weather-content">
+                    <div class="weather-icon"></div>
+                    <div class="weather-info">
+                        <div class="weather-location">Loading...</div>
+                        <div class="weather-temp">--°C</div>
+                        <div class="weather-description">Please wait...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     <section class="hero" id="home">
         <div class="hero-content" data-aos="fade-right">
             <h1>Découvrez notre collection exclusive</h1>
             <p>Les meilleures offres pour des produits de qualité supérieure</p>
-            <button class="cta-button">Acheter maintenant</button>
+           
+            <button id="checkout" class="cta-button">Acheter maintenant</button>
+
+            <div class="form-group">
+                <label class="form-label">Nom</label>
+                <input type="text" id="nom" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Telephone:</label>
+                <input type="tel"  id='tel' class="form-input" placeholder="Mettre le code du pay..." pattern="\+[0-9]*" required>
+            </div>
+         
+            <button id="sms" class="cta-button">Send sms</button>
+            <div id="response" class="hidden"></div>
         </div>
         <div class="hero-image" data-aos="fade-left"></div>
     </section>
@@ -523,11 +667,13 @@
             <p>&copy; 2023 Armel Dev. Tous droits réservés.</p>
         </div>
     </footer>
-
+    <script type="module" src="sms.js"></script>
+    <script type="module" src="weather.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        
         // Initialisation AOS
         AOS.init({
             duration: 1000,
@@ -637,6 +783,23 @@
                 }, 3000);
             });
         });
+        var stripe = Stripe('pk_test_51QSx24G19TUm3U3Ap19tbglZDC3y4cSijVWgCBiE3oKKIqBxGtuMo1fc3hGTODqsToBJSNdJ7AI4q1BhAHQRC3Pa00O6uFa2Ux');
+
+document.getElementById("checkout").addEventListener("click", function () {
+    stripe.redirectToCheckout({
+        lineItems: [
+            {
+                price: "price_1QSy0YG19TUm3U3AMRLdMLkQ",
+                quantity: 1
+            },
+        ],
+        mode: "subscription", // ou "payment" selon le cas
+        successUrl: "https://tuyisengearmel.github.io/web/success.html",
+        cancelUrl: "https://tuyisengearmel.github.io/web/cancel.html"
+    }).then(function (result) {
+        alert(result.error ? result.error.message : "Redirection réussie !");
+    });
+});
     </script>
 </body>
 </html>
